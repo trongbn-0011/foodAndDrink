@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<!-- Generated Jun 19, 2019 8:07:42 AM by Hibernate Tools 3.5.0.Final -->
+<hibernate-mapping package="app.model">
+    <class name="Product" table="products">
+        <id name="id" type="java.lang.Integer">
+            <column name="id" />
+            <generator class="assigned" />
+        </id>
+        <property name="name" type="java.lang.String">
+            <column name="name" />
+        </property>
+        <property name="description" type="java.lang.String">
+            <column name="description" />
+        </property>
+        <property name="price" type="java.lang.Float">
+            <column name="price" />
+        </property>
+        <property name="avgRate" type="java.lang.Float">
+            <column name="avgrate" />
+        </property>
+        <property name="quantity" type="java.lang.Integer">
+            <column name="quantity" />
+        </property>
+        <many-to-one name="category" class="Category" fetch="select">
+            <column name="categoryid" />
+        </many-to-one>
+        <list name="orderProducts" table="orderproducts" fetch="select" inverse="true">
+            <key>
+                <column name="id" />
+            </key>
+            <list-index></list-index>
+            <one-to-many class="OrderProduct" />
+        </list>
+        <list name="rates" table="rates" fetch="select" inverse="true">
+            <key>
+                <column name="id" />
+            </key>
+            <list-index></list-index>
+            <one-to-many class="Rate" />
+        </list>
+    </class>
+</hibernate-mapping>
