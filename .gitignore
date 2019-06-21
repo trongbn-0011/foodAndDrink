@@ -25,4 +25,4 @@ hs_err_pid*
 
 
 #database-config#
-/src/main/webapp/WEB-INF/configs/database-config.properties
+/src/resources/database-config.properties
