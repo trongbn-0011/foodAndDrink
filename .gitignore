@@ -26,3 +26,7 @@ hs_err_pid*
 
 #database-config#
 /src/resources/database-config.properties
+
+# eclipse config 
+*.classpath
+.project
