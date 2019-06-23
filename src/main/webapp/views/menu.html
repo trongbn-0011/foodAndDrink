@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="fragments/layout">
+	
+<title>Menu</title>
+	
+<div layout:fragment="content">
+	<!-- Breadcrumbs -->
+	<section class="breadcrumbs-custom-inset">
+		<div class="breadcrumbs-custom context-dark bg-overlay-33">
+			<div class="container">
+				<h2 class="breadcrumbs-custom-title">Menu</h2>
+				<ul class="breadcrumbs-custom-path">
+					<li><a href="index.html">Home</a></li>
+					<li class="active">Menu</li>
+				</ul>
+			</div>
+			<div class="box-position"
+				style="background-image: url(/foodAndDrink/assets/images/bg-breadcrumbs.jpg);"></div>
+		</div>
+	</section>
+	
+	<!-- Base typography-->
+	<section class="section section-sm section-first bg-default text-left">
+		<div class="container">
+			<div
+				class="row row-40 flex-lg-row-reverse justify-content-xl-between">
+				<div class="col-xl-5 d-none d-xl-block">
+					<div class="offset-left-xl-45">
+						<h1>H1 Menu</h1>
+						<h2>H2 Menu</h2>
+						<h3>H3 Menu</h3>
+						<h4>H4 Menu</h4>
+						<h5>H5 Menu</h5>
+						<h6>H6 Menu</h6>
+					</div>
+				</div>
+				<div class="col-xl-7">
+					<ul class="list-xl box-typography">
+						<li>
+							<h1>H1 Menu</h1>
+							<p>Mon 1</p>
+						</li>
+						<li>
+							<h2>H2 Menu</h2>
+							<p>Mon 2</p>
+						</li>
+						<li>
+							<h3>H3 Menu</h3>
+							<p>Mon 3</p>
+						</li>
+						<li>
+							<h4>H4 Menu</h4>
+							<p>Mon 4</p>
+						</li>
+						<li>
+							<h5>H5 Menu</h5>
+							<p>Mon 5</p>
+						</li>
+						<li>
+							<h6>H6 Menu</h6>
+							<p>Mon 6</p>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- HTML Text Elements-->
+	<section class="section section-sm bg-default text-left">
+		<div class="container">
+			<h3>MENU</h3>
+			<p class="text-block">
+				Mon 1
+				<mark>Mon 2</mark>
+				Mon 3<span class="tooltip-custom" data-toggle="tooltip"
+					data-placement="top" title="Default text">Mon 4</span>Mon 5<span
+					class="text-strike">This is a strikethrough text</span><span
+					class="text-underline">Mon 6</span><a href="#">Link</a><a
+					class="link-hover" href="#">Hover link</a><a class="link-active"
+					href="#">Press link</a>
+			</p>
+		</div>
+	</section>
+
+	<!-- Lists and Blockquote-->
+	<section class="section section-sm section-last bg-default text-left">
+		<div class="container">
+			<div class="row row-60 row-md-80 row-lg-90">
+				<div class="col-lg-8 col-xl-6">
+					<h3>Ordered & Unordered Lists</h3>
+					<div class="row row-sm row-30">
+						<div class="col-sm-6">
+							<ul class="list-marked">
+								<li>Mon 1</li>
+								<li>Mon 2</li>
+								<li>Mon 3</li>
+								<li>Mon 4</li>
+								<li>Mon 5</li>
+							</ul>
+						</div>
+						<div class="col-sm-6">
+							<ol class="list-ordered">
+								<li>Mon 1</li>
+								<li>Mon 2</li>
+								<li>Mon 3</li>
+								<li>Mon 4</li>
+								<li>Mon 5</li>
+							</ol>
+						</div>
+					</div>
+				</div>
+				<div class="col-lg-8 col-xl-6">
+					<div class="offset-left-xl-65">
+						<h3>Blockquote</h3>
+						<!-- Quote Classic-->
+						<article class="quote-classic">
+							<div class="quote-classic-text">
+								<p class="q">We use only trusted, verified source of food,
+									so you can believe our every products.</p>
+							</div>
+							<h6 class="quote-classic-cite">Be Ngoc Trong</h6>
+						</article>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
+</html>

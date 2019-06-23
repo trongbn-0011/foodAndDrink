@@ -8,7 +8,16 @@ public class HomeController {
 
 	@GetMapping("/")
 	public String indexHomepage() {
-		return "home.html";
+		return "index.html";
 	}
 
+	@GetMapping("/contact")
+	public String contact() {
+		return "contact.html";
+	}
+	
+	@GetMapping("/menu")
+	public String menu() {
+		return "menu.html";
+	}
 }
