@@ -14,6 +14,38 @@ public class Product {
 	private List<OrderProduct> orderProducts;
 	private List<Rate> rates;
 	
+	public Product() {}
+	
+	public Product(String name, 
+			String description, 
+			float price, 
+			float avgRate,
+			int quantity,
+			Category category) {
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.avgRate = avgRate;
+		this.quantity = quantity;
+		this.category = category;
+	}
+	
+	public Product(int id, 
+			String name, 
+			String description, 
+			float price, 
+			float avgRate,
+			int quantity,
+			Category category) {
+		this.id = id;
+		this.name = name;
+		this.description = description;
+		this.price = price;
+		this.avgRate = avgRate;
+		this.quantity = quantity;
+		this.category = category;
+	}
+	
 	public Integer getId() {
 		return id;
 	}

@@ -49,4 +49,5 @@ public abstract class GenericDAO<PK extends Serializable, T> extends HibernateDa
 	protected Session getSession() {
 		return sessionFactory.getCurrentSession();
 	}
+	
 }
