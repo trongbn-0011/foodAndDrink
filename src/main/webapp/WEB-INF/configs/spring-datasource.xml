@@ -13,7 +13,7 @@
 		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="${driverClassName}" />
 		<property name="url" value="${url}" />
-		<property name="username" value="${username}" />
+		<property name="username" value="${root}" />
 		<property name="password" value="${password}" />
 	</bean>
 	
@@ -38,6 +38,29 @@
 				<value>app/model/hbm/Rate.hbm.xml</value>
 				<value>app/model/hbm/Suggestion.hbm.xml</value>
 			</list>
+		</property>
+	</bean>
+	<bean id="transactionManager"
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+
+	<!-- Define scope transaction -->
+	<bean id="baseTransactionProxy" abstract="true"
+		class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
+		<property name="transactionManager" ref="transactionManager" />
+
+		<!-- Define methods which use transaction. If property is PROPAGATION_REQUIRED, 
+			when access db, MUST use transaction -->
+		<property name="transactionAttributes">
+			<props>
+				<prop key="create*">PROPAGATION_REQUIRED</prop>
+				<prop key="save*">PROPAGATION_REQUIRED</prop>
+				<prop key="remove*">PROPAGATION_REQUIRED</prop>
+				<prop key="delete*">PROPAGATION_REQUIRED</prop>
+				<prop key="update*">PROPAGATION_REQUIRED</prop>
+				<prop key="*">PROPAGATION_REQUIRED,readOnly</prop>
+			</props>
 		</property>
 	</bean>
 </beans>

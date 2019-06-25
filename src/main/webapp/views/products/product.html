@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="fragments/layout">
+<head>
+	<title th:text="${product.name}"/>
+</head>
+<div layout:fragment="content">
+<section class="breadcrumbs-custom-inset">
+		<div class="breadcrumbs-custom context-dark bg-overlay-39">
+			<div class="container">
+				<h1 th:text="${product.name}"/>
+				<h3 th:text="${product.description}"/>
+				<h4 th:text="${product.price}"/>
+			</div>
+			<div class="box-position"
+				style="background-image: url(/foodAndDrink/assets/images/bg-breadcrumbs.jpg);"></div>
+		</div>
+	</section>
+</div>
+</html>
