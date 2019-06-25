@@ -14,6 +14,9 @@
         <property name="description" type="java.lang.String">
             <column name="description" />
         </property>
+        <property name="image" type="java.lang.String">
+            <column name="image" />
+        </property>
         <property name="price" type="java.lang.Float">
             <column name="price" />
         </property>
