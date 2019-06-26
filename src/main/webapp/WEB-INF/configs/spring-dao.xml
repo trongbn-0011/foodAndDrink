@@ -5,6 +5,10 @@
     http://www.springframework.org/schema/beans/spring-beans.xsd">
 
 	<bean id="ProductDAO" class="app.dao.impl.ProductDAOImpl">
-		<property name="sessionFactory" ref="sessionFactory"/>
+		<property name="sessionFactory" ref="sessionFactory" />
+	</bean>
+	
+	<bean id="userDAO" class="app.dao.impl.UserDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
 </beans>
