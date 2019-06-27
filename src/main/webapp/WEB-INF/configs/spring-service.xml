@@ -11,13 +11,12 @@
 			</bean>
 		</property>
 	</bean>
-	<bean id="userService" parent="baseTransactionProxy">
+	<bean id="UserService" parent="baseTransactionProxy">
 		<property name="target">
 			<bean class="app.service.impl.UserServiceImpl">
-				<property name="userDAO" ref="userDAO" />
+				<property name="userDAO" ref="UserDAO" />
 			</bean>
 		</property>
 	</bean>
 
 </beans>
-
