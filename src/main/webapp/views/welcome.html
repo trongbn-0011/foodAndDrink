@@ -4,7 +4,7 @@
     <title>Login page</title>
   </head>
   <body>
-    <h1>Login page  <label th:text="${name}"></label></h1>
+    <h1>Login page  <label th:text="${session.name}"></label></h1>
    	<form th:action="logout" method="get">
     <input type="submit" value="Logout" />
   </form>

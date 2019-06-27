@@ -1,6 +1,9 @@
 package app.controller;
 
 import org.apache.log4j.Logger;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -35,19 +38,22 @@ public class UserController {
 
 	@PostMapping("/welcome")
 	public String welcome(@RequestParam("username") String username, @RequestParam("password") String password,
-			Model model) {
+			HttpServletRequest request) {
 
 		User user = getUserService().findByUsenameAndPassword(username, password);
 		if (user != null) {
-			model.addAttribute("name", user.getName());
+			HttpSession session = request.getSession(true);
+			session.setAttribute("name", user.getName());
 			return "welcome";
 		}
 		return "login";
 	}
 
 	@GetMapping("/logout")
-	public String logout(Model model) {
-		model.addAttribute("message", msg_logout);
+	public String logout(HttpServletRequest request) {
+		HttpSession session = request.getSession(false);
+		session.setAttribute("message", msg_logout);
+		session.invalidate();
 		return "login";
 	}
 
