@@ -1,31 +1,35 @@
 package app.service.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import java.io.Serializable;
 
-import app.service.impl.UserServiceImpl;
+import org.apache.log4j.Logger;
 
-import app.dao.UserDAO;
 import app.model.User;
-
 import app.service.UserService;
 
-@Service
-public class UserServiceImpl implements UserService {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(UserServiceImpl.class);
+public class UserServiceImpl extends BaseServiceImpl implements UserService {
+	private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
 	
-	@Autowired
-	private UserDAO userDAO;
-
-	public UserDAO getUserDAO() {
-		return userDAO;
+	@Override
+	public User findById(Serializable key) {
+		try {
+			return getUserDAO().findById(key);
+		} catch (Exception e) {
+			LOGGER.error(e);
+			return null;
+		}
 	}
 
-	public void setUserDAO(UserDAO userDAO) {
-		this.userDAO = userDAO;
+	@Override
+	public User saveOrUpdate(User entity) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean delete(User entity) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 	@Override

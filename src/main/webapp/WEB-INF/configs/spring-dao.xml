@@ -7,8 +7,8 @@
 	<bean id="ProductDAO" class="app.dao.impl.ProductDAOImpl">
 		<property name="sessionFactory" ref="sessionFactory" />
 	</bean>
-	
-	<bean id="userDAO" class="app.dao.impl.UserDAOImpl">
-		<property name="sessionFactory" ref="sessionFactory" />
+	<bean id="UserDAO" class="app.dao.impl.UserDAOImpl">
+		<property name="sessionFactory" ref="sessionFactory"/>
 	</bean>
-</beans>
+	
+</beans> 

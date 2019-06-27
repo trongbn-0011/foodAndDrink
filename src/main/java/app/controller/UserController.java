@@ -1,14 +1,13 @@
 package app.controller;
 
-import java.io.InputStream;
-import java.util.Properties;
-
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -18,12 +17,17 @@ import app.service.UserService;
 @Controller
 @PropertySource("classpath:messages.properties")
 public class UserController {
+	private static final Logger logger = Logger.getLogger(UserController.class);
 
 	@Autowired
 	private UserService userService;
-	
+
 	@Value("${messages.logout}")
 	private String msg_logout;
+	@Value("${messages.nouserfound}")
+	private String msg_nouserfound;
+	@Value("${messages.danger}")
+	private String danger;
 
 	public UserService getUserService() {
 		return userService;
@@ -46,4 +50,19 @@ public class UserController {
 		model.addAttribute("message", msg_logout);
 		return "login";
 	}
+
+	@GetMapping(value = "users/{id}")
+	public String show(@PathVariable("id") int id, Model model) {
+		logger.info("detail student");
+		User user = userService.findById(id);
+		if (user != null) {
+			model.addAttribute("user", user);
+			return "users/user";
+		}
+
+		model.addAttribute("css", danger);
+		model.addAttribute("msg", msg_nouserfound);
+		return "error";
+	}
+
 }
