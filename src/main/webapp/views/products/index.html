@@ -67,7 +67,7 @@
 							<ul th:if="${products.totalPages > 0}" class="pagination">
 								<li th:class="'page-item' + ${page==products.number + 1} ? active" th:each="page : ${pages}">
 									<a
-										th:href="@{/products/index(size=${products.size}, page=${page})}"
+										th:href= "@{/products/index(search=${search}, size=${products.size}, page=${page})} "
 										th:text="${page}"
 										th:class="page-link" />
 								</li>

@@ -12,8 +12,9 @@ public class ProductDAOImpl extends GenericDAO<Integer, Product> implements Prod
 	}
 
 	@Override
-	public List<Product> findAll(int size, int page) {
-		return (List<Product>) getSession().createQuery("from Product")
+	public List<Product> loadProducts(String productName, int size, int page) {
+		return (List<Product>) getSession().createQuery("from Product where name like :productName")
+				.setString("productName", "%"+productName+"%")
 				.setFirstResult(page*size)
 				.setMaxResults(size)
 				.getResultList();

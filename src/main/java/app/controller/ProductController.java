@@ -32,13 +32,19 @@ public class ProductController {
 	private int defaultPageSize;
 	
 	@GetMapping(value = "/index")
-	public String index(Model model, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
+	public String index(Model model, @RequestParam("search") Optional<String> search, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
 		int currentPage = page.orElse(defaultPage);
 	    int pageSize = size.orElse(defaultPageSize);
-	    Page<Product> products = productService.findPaginated(PageRequest.of(currentPage - 1, pageSize));
+	    String productName = search.orElse("");
+	    
+	    Page<Product> products = productService.loadProducts(productName, PageRequest.of(currentPage - 1, pageSize));
+	    
+	    model.addAttribute("search", productName);
 	    model.addAttribute("products", products);
+	    
 	    int totalPages = products.getTotalPages();
-        if (totalPages > 0) {
+        
+	    if (totalPages > 0) {
             List<Integer> pages = IntStream.rangeClosed(1, totalPages)
                 .boxed()
                 .collect(Collectors.toList());
