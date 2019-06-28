@@ -7,6 +7,7 @@ public class Product {
 	private Integer id;  
 	private String name;
 	private String description;
+	private String image;
 	private Float price;
 	private Float avgRate;
 	private Integer quantity;
@@ -18,12 +19,14 @@ public class Product {
 	
 	public Product(String name, 
 			String description, 
+			String image,
 			float price, 
 			float avgRate,
 			int quantity,
 			Category category) {
 		this.name = name;
 		this.description = description;
+		this.image = image;
 		this.price = price;
 		this.avgRate = avgRate;
 		this.quantity = quantity;
@@ -33,6 +36,7 @@ public class Product {
 	public Product(int id, 
 			String name, 
 			String description, 
+			String image,
 			float price, 
 			float avgRate,
 			int quantity,
@@ -40,6 +44,7 @@ public class Product {
 		this.id = id;
 		this.name = name;
 		this.description = description;
+		this.image = image;
 		this.price = price;
 		this.avgRate = avgRate;
 		this.quantity = quantity;
@@ -70,6 +75,14 @@ public class Product {
 		this.description = description;
 	}
 	
+	public String getImage() {
+		return image;
+	}
+
+	public void setImage(String image) {
+		this.image = image;
+	}
+
 	public Float getPrice() {
 		return price;
 	}
