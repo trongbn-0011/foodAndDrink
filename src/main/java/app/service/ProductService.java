@@ -8,7 +8,7 @@ import app.model.Product;
 
 public interface ProductService extends BaseService<Integer, Product> {
 	
-	Page<Product> findPaginated(Pageable pageable);
+	Page<Product> loadProducts(String productName, Pageable pageable);
 	
 	int productCount();
 }

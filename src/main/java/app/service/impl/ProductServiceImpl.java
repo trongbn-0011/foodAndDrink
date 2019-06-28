@@ -32,16 +32,10 @@ public class ProductServiceImpl extends BaseServiceImpl implements ProductServic
 		return false;
 	}
 
-	@Override
-	public Page<Product> findPaginated(Pageable pageable) {
+	public Page<Product> findPaginated(Pageable pageable, List<Product> products) {
 		try {
-			int pageSize = pageable.getPageSize();
-	        int currentPage = pageable.getPageNumber();
-			
-			List<Product> products = getProductDAO().findAll(pageSize, currentPage);
-	 
 	        Page<Product> productPage
-	          = new PageImpl<Product>(products, PageRequest.of(currentPage, pageSize), productCount());
+	          = new PageImpl<Product>(products, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), productCount());
 	        return productPage;
 		} catch (Exception e) {
 			return null;
@@ -51,6 +45,16 @@ public class ProductServiceImpl extends BaseServiceImpl implements ProductServic
 	@Override
 	public int productCount() {
 		return getProductDAO().productCount();
+	}
+
+	@Override
+	public Page<Product> loadProducts(String productName, Pageable pageable) {
+		try {
+			List<Product> products = getProductDAO().loadProducts(productName, pageable.getPageSize(), pageable.getPageNumber());
+			return findPaginated(pageable, products);
+		} catch (Exception e) {
+			return null;
+		}
 	}
 
 }

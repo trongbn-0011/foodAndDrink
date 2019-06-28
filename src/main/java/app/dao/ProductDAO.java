@@ -5,7 +5,8 @@ import app.model.Product;
 
 public interface ProductDAO extends BaseDAO<Integer, Product> {
 	
-	List<Product> findAll(int size, int page);
+	List<Product> loadProducts(String productName, int size, int page);
 	
 	int productCount();
+	
 }
