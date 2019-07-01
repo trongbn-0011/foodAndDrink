@@ -9,7 +9,7 @@ import app.service.UserService;
 
 public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
-	
+
 	@Override
 	public User findById(Serializable key) {
 		try {
@@ -41,6 +41,19 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 			LOGGER.info("---> Error find username and password");
 			return null;
 		}
+	}
+
+	@Override
+	public boolean createUser(User user) {
+		try {
+			user.setActived(0);
+			user.setRole(0);
+			User userNew = getUserDAO().saveOrUpdate(user);
+			return userNew != null;
+		} catch (Exception e) {
+			LOGGER.error(e);
+		}
+		return false;
 	}
 
 }

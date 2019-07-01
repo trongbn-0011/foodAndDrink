@@ -5,7 +5,7 @@ import app.dao.UserDAO;
 import app.model.User;
 
 public class UserDAOImpl extends GenericDAO<Integer, User> implements UserDAO {
-	
+
 	public UserDAOImpl() {
 		super(User.class);
 	}
@@ -15,4 +15,12 @@ public class UserDAOImpl extends GenericDAO<Integer, User> implements UserDAO {
 		return (User) getSession().createQuery("from User where name=:username and password=:password")
 				.setParameter("username", username).setParameter("password", password).uniqueResult();
 	}
+
+	@Override
+	public boolean checkEmail(String email) {
+		User user = (User) getSession().createQuery("from User where email = :userEmail")
+				.setParameter("userEmail", email).uniqueResult();
+		return user != null;
+	}
+
 }

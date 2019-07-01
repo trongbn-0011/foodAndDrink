@@ -6,4 +6,6 @@ public interface UserService extends BaseService<Integer, User> {
 	
 	User findByUsenameAndPassword(String username, String password);
 	
+	boolean createUser(User user);
+	
 }
