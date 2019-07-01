@@ -9,13 +9,17 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import app.model.User;
 import app.service.UserService;
+import validate.UserValidation;
 
 @Controller
 @PropertySource("classpath:messages.properties")
@@ -71,4 +75,22 @@ public class UserController {
 		return "error";
 	}
 
+	@PostMapping(value = "/registerProcess")
+	public String register(@ModelAttribute("user") User user, BindingResult result) {
+		UserValidation validation = new UserValidation();
+		validation.validate(user, result);
+		if (result.hasErrors()) {
+			return "register";
+		} else {
+			userService.createUser(user);
+		}
+		return "index";
+	}
+
+	@GetMapping("/register")
+	public String register(ModelMap modelMap) {
+		modelMap.addAttribute("user", new User());
+		return "register";
+	}
+	
 }
