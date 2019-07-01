@@ -1,14 +1,11 @@
 package app.service.impl;
 
 import java.io.Serializable;
-import java.util.Collections;
 import java.util.List;
-
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-
 import app.model.Product;
 import app.service.ProductService;
 
@@ -32,10 +29,10 @@ public class ProductServiceImpl extends BaseServiceImpl implements ProductServic
 		return false;
 	}
 
-	public Page<Product> findPaginated(Pageable pageable, List<Product> products) {
+	public Page<Product> findPaginated(Pageable pageable, List<Product> products, String productName) {
 		try {
 	        Page<Product> productPage
-	          = new PageImpl<Product>(products, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), productCount());
+	          = new PageImpl<Product>(products, PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), productCount(productName));
 	        return productPage;
 		} catch (Exception e) {
 			return null;
@@ -43,15 +40,19 @@ public class ProductServiceImpl extends BaseServiceImpl implements ProductServic
 	}
 
 	@Override
-	public int productCount() {
-		return getProductDAO().productCount();
+	public int productCount(String productName) {
+		try {
+			return getProductDAO().productCount(productName);
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 
 	@Override
-	public Page<Product> loadProducts(String productName, Pageable pageable) {
+	public Page<Product> loadProducts(int categoryId, String productName, int orderBy, Pageable pageable) {
 		try {
-			List<Product> products = getProductDAO().loadProducts(productName, pageable.getPageSize(), pageable.getPageNumber());
-			return findPaginated(pageable, products);
+			List<Product> products = getProductDAO().loadProducts(categoryId, productName, orderBy, pageable.getPageSize(), pageable.getPageNumber());
+			return findPaginated(pageable, products, productName);
 		} catch (Exception e) {
 			return null;
 		}

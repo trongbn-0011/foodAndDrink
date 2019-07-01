@@ -2,8 +2,6 @@ package app.controller;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -15,7 +13,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import app.model.Category;
 import app.model.Product;
+import app.service.CategoryService;
 import app.service.ProductService;
 
 @Controller
@@ -25,31 +25,44 @@ public class ProductController {
 	
 	@Autowired
 	private ProductService productService;
+	@Autowired
+	private CategoryService categoryService;
 	
 	@Value("${defaultProductPage}")
 	private int defaultPage;
 	@Value("${defaultProductPageSize}")
 	private int defaultPageSize;
+	@Value("${defaultProductName}")
+	private String defaultProductName;
+	@Value("${defaultCategory}")
+	private int defaultCategory;
+	@Value("${defaultOrderBy}")
+	private int defaultOrderBy;
 	
 	@GetMapping(value = "/index")
-	public String index(Model model, @RequestParam("search") Optional<String> search, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
+	public String index(Model model, @RequestParam("category") Optional<Integer> category,
+			@RequestParam("search") Optional<String> search, 
+			@RequestParam("orderBy") Optional<Integer> orderBy,
+			@RequestParam("page") Optional<Integer> page, 
+			@RequestParam("size") Optional<Integer> size) {
+		
+		List<Category> categories = categoryService.loadSubCategories(0);
+		model.addAttribute("categories", categories);
+		
+		int categoryId = category.orElse(defaultCategory);
+		String productName = search.orElse(defaultProductName);
+		int order = orderBy.orElse(defaultOrderBy);
 		int currentPage = page.orElse(defaultPage);
 	    int pageSize = size.orElse(defaultPageSize);
-	    String productName = search.orElse("");
 	    
-	    Page<Product> products = productService.loadProducts(productName, PageRequest.of(currentPage - 1, pageSize));
+	    
+	    Page<Product> products = productService.loadProducts(categoryId, productName, order, PageRequest.of(currentPage - 1, pageSize));
 	    
 	    model.addAttribute("search", productName);
 	    model.addAttribute("products", products);
 	    
 	    int totalPages = products.getTotalPages();
-        
-	    if (totalPages > 0) {
-            List<Integer> pages = IntStream.rangeClosed(1, totalPages)
-                .boxed()
-                .collect(Collectors.toList());
-            model.addAttribute("pages", pages);
-        }
+        model.addAttribute("totalPages", totalPages);
 	    return "products/index";
 	}
 	
