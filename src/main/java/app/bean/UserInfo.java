@@ -1,19 +1,28 @@
 package app.bean;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import app.dao.UserDAO;
+import app.model.User;
+import app.service.UserService;
+
 public class UserInfo {
 
 	private Integer id;
 	private String name;
 	private String email;
 	private String password;
+	private String confirmPassword;
 	private String address;
 	private String avatar;
 
-	public UserInfo(Integer id, String name, String email, String password, String address, String avatar) {
+	public UserInfo(Integer id, String name, String email, String password, String confirmPassword, String address,
+			String avatar) {
 		this.id = id;
 		this.name = name;
 		this.email = email;
 		this.password = password;
+		this.confirmPassword = confirmPassword;
 		this.address = address;
 		this.avatar = avatar;
 	}
@@ -76,4 +85,23 @@ public class UserInfo {
 	public void setAvatar(String avatar) {
 		this.avatar = avatar;
 	}
+
+	public String getConfirmPassword() {
+		return confirmPassword;
+	}
+
+	public void setConfirmPassword(String confirmPassword) {
+		this.confirmPassword = confirmPassword;
+	}
+
+	public User convertToUser() {
+		User user = new User();
+		user.setId(this.getId());
+		user.setName(this.getName());
+		user.setEmail(this.getEmail());
+		user.setAddress(this.getAddress());
+		user.setPassword(this.getPassword());
+		return user;
+	}
+	
 }

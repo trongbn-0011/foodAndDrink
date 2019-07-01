@@ -38,12 +38,11 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	}
 
 	@Override
-	public User findByUsenameAndPassword(String username, String password) {
+	public User findByEmailAndPassword(String usermail, String password) {
 		try {
-			User user = userDAO.findByUsenameAndPassword(username, password);
+			User user = userDAO.findByEmailAndPassword(usermail, password);
 			return user;
 		} catch (Exception e) {
-			LOGGER.info("---> Error find username and password");
 			return null;
 		}
 	}
@@ -57,8 +56,19 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 			return userNew != null;
 		} catch (Exception e) {
 			LOGGER.error(e);
+			throw e;
 		}
-		return false;
+
+	}
+
+	@Override
+	public boolean isEmailExist(String email) {
+		try {
+			return getUserDAO().checkEmail(email);
+		} catch (Exception e) {
+			LOGGER.error(e);
+			throw e;
+		}
 	}
 
 	public Page<User> findPaginated(Pageable pageable, List<User> users, String userName) {

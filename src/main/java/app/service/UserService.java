@@ -7,12 +7,14 @@ import app.model.User;
 
 public interface UserService extends BaseService<Integer, User> {
 	
-	User findByUsenameAndPassword(String username, String password);
+	User findByEmailAndPassword(String usermail, String password);
 	
 	boolean createUser(User user);
 
 	Page<User> loadUsers(String userName, Pageable pageable);
 	
 	int userCount(String userName);
+	
+	boolean isEmailExist(String email);
 	
 }
