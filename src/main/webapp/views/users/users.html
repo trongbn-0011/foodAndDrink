@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>All Users</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Varela+Round">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<link rel="icon" th:href="@{/assets/images/logo.png}" type="image/x-icon">
+<link rel="stylesheet" type="text/css" th:href="@{/assets/css/user-all.css}">
+<script type="text/javascript">
+$(document).ready(function(){
+	$('[data-toggle="tooltip"]').tooltip();
+});
+</script>
+</head>
+<body>
+    <div class="container">
+        <div class="table-wrapper">
+            <div class="table-title">
+                <div class="row">
+                    <div class="col-sm-5">
+						<h2>User <b>Management</b></h2>
+					</div>
+					<div class="col-sm-7">
+<!-- 						<a href="#" class="btn btn-primary"><i class="material-icons">&#xE147;</i> <span>Add New User</span></a> -->
+						<a th:href="@{/}" class="btn btn-primary"><i class="material-icons">&#xe166;</i> <span>Back to Homepage</span></a>						
+					</div>
+                </div>
+            </div>
+            <div class="table-filter">
+				<div class="row">
+                    <div class="col-sm-3">
+						<div class="show-entries">
+							<span>Show</span>
+							form 
+							<select class="form-control">
+								<option>5</option>
+								<option>10</option>
+								<option>15</option>
+								<option>20</option>
+							</select>
+							<span>entries</span>
+						</div>
+					</div>
+                    <div class="col-sm-9">
+                    	<form th:action="@{/users(search=${userName})}" method="get">
+                    		<button type="submit" class="btn btn-primary" ><i class="fa fa-search"></i></button>
+							<div class="filter-group">
+								<label>Name</label>
+								<input type="text" class="form-control" id="search" name="search">
+							</div>
+						</form>
+						<div class="filter-group">
+							<label>Status</label>
+							<select class="form-control">
+								<option>Any</option>
+								<option>Admin</option>
+								<option>User</option>
+							</select>
+						</div>
+                    </div>
+                </div>
+			</div>
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Name</th>						
+						<th>Email</th>
+						<th>Address</th>
+                        <th>Role</th>
+						<th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                	<th:block th:each="user : ${users}">
+	                    <tr>
+	                        <td th:text="${user.id}"></td>
+	                        <td th:inline="text"><a th:href="'users/' + ${user.id}"><img th:src="${user.avatar}" class="avatar" alt="Avatar"> [[${user.name}]]</a></td>
+	                        <td th:text="${user.email}"></td>                        
+	                        <td th:text="${user.address}"></td>
+							<td th:if="${user.role == 0}"><span class="status text-success">&bull;</span> Admin</td>
+							<td th:if="${user.role == 1}"><span class="status text-muted">&bull;</span> User</td>
+							<td>
+								<a href="#" class="settings" title="Settings" data-toggle="tooltip"><i class="material-icons">&#xE8B8;</i></a>
+								<a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
+							</td>
+	                    </tr>
+	                   </th:block>
+                </tbody>
+            </table>
+			<div class="clearfix">
+                <div class="hint-text">Showing <b>5</b> out of <b th:text="${users.size}"></b> entries</div>
+					<ul th:if="${users.totalPages > 1}" class="pagination">
+						<li th:class="(${page==users.number + 1} ? 'active' : '') + ' page-item'" th:each="page : ${pages}">
+							<a
+								th:href= "@{/users(search=${search}, size=${users.size}, page=${page})} "
+								th:text="${page}"
+								th:class="page-link">
+							</a>
+						</li>
+					</ul>
+            </div>
+        </div>
+    </div>     
+</body>
+</html>                                		                            

@@ -1,8 +1,13 @@
 package app.service.impl;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import app.model.User;
 import app.service.UserService;
@@ -54,6 +59,37 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 			LOGGER.error(e);
 		}
 		return false;
+	}
+
+	public Page<User> findPaginated(Pageable pageable, List<User> users, String userName) {
+		try {
+			Page<User> userPage = new PageImpl<User>(users,
+					PageRequest.of(pageable.getPageNumber(), pageable.getPageSize()), userCount(userName));
+			return userPage;
+		} catch (Exception e) {
+			return null;
+		}
+	}
+
+	@Override
+	public int userCount(String userName) {
+		try {
+			return getUserDAO().userCount(userName);
+		} catch (Exception e) {
+			LOGGER.error(e);
+			throw e;
+		}
+	}
+
+	@Override
+	public Page<User> loadUsers(String userName, Pageable pageable) {
+		try {
+			List<User> users = getUserDAO().loadUsers(userName, pageable.getPageSize(), pageable.getPageNumber());
+			return findPaginated(pageable, users, userName);
+		} catch (Exception e) {
+			LOGGER.error(e);
+			return null;
+		}
 	}
 
 }
