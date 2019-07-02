@@ -74,3 +74,6 @@ footer a {
     border-top-left-radius: calc(.25rem - 1px);
     border-top-right-radius: calc(.25rem - 1px);
 }
+.filter_form {
+	margin-left: 250px;
+}

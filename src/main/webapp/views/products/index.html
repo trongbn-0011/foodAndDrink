@@ -13,17 +13,33 @@
 <div layout:fragment="content">
 	<section class="jumbotron text-center">
 		<div class="container">
+	    	<div th:class="filter_form">
+		        <form class="form-inline" th:action="@{/products/index}">
+			        <div class="form-group">
+			        	<label class="" >Name</label>
+		                <input type="text" class="form-control" placeholder="Product name" th:name="search">
+			        </div>
+			        <div class="form-group">
+	                    <label class="" >Category</label>
+	                    <select class="form-control" th:name="category">
+	                    	<option th:text="All" th:value=0 th:selected />
+	                    	<option th:each="category : ${categories}" th:text="${category.name}" th:value="${category.id}" />
+	                    </select>
+			         </div>
+			         <div class="form-group">
+	                    <label class="" >Price</label>
+	                    <select class="form-control" th:name="orderBy">
+	                    	<option th:value=0 th:text="Up" th:selected />
+	                    	<option th:value=1 th:text="Down" />
+	                    </select>
+			         </div>   
+		             <button type="submit" class="btn btn-default">Filter</button>
+		        </form>
+		        </div>
+		</div>
+		<div class="container">
 			<div class="row">
 				<div class="col-12 col-sm-3">
-					<div class="card bg-light mb-3">
-						<div class="card-header bg-primary text-white text-uppercase">
-							<i class="fa fa-list"></i> Categories
-						</div>
-						<ul class="list-group category_block">
-							<li class="list-group-item"><a href="category.html">Cras
-									justo odio</a></li>
-						</ul>
-					</div>
 					<div class="card bg-light mb-3">
 						<div class="card-header bg-success text-white text-uppercase">Last
 							product</div>
@@ -64,8 +80,8 @@
 					</div>
 					<div class="col-12">
 						<nav aria-label="...">
-							<ul th:if="${products.totalPages > 0}" class="pagination">
-								<li th:class="'page-item' + ${page==products.number + 1} ? active" th:each="page : ${pages}">
+							<ul class="pagination">
+								<li th:class="'page-item' + ${page==products.number + 1} ? active" th:each="page : ${#numbers.sequence(1,totalPages)}">
 									<a
 										th:href= "@{/products/index(search=${search}, size=${products.size}, page=${page})} "
 										th:text="${page}"
