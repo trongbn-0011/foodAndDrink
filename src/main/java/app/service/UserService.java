@@ -14,6 +14,8 @@ public interface UserService extends BaseService<Integer, User> {
 	Page<User> loadUsers(String userName, Pageable pageable);
 	
 	int userCount(String userName);
+
+	boolean deleteUser(Integer id);
 	
 	boolean isEmailExist(String email);
 	

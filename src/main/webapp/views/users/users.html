@@ -16,6 +16,14 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	$('[data-toggle="tooltip"]').tooltip();
+	$('.alert-autocloseable-success').delay(3000).fadeOut( "slow", function() {
+		// Animation complete.
+		$('#autoclosable-btn-success').prop("disabled", false);
+	});
+	$('.alert-autocloseable-error').delay(6000).fadeOut( "slow", function() {
+		// Animation complete.
+		$('#autoclosable-btn-error').prop("disabled", false);
+	});
 });
 </script>
 </head>
@@ -33,6 +41,11 @@ $(document).ready(function(){
 					</div>
                 </div>
             </div>
+            
+           	<div th:if="${msg != null}" th:class="'alert alert-' + ${css} + ' alert-dismissible alert-autocloseable-' + ${css}" role="alert">
+       			<strong th:text="${msg}"></strong>
+			</div>
+			
             <div class="table-filter">
 				<div class="row">
                     <div class="col-sm-3">
@@ -89,7 +102,7 @@ $(document).ready(function(){
 							<td th:if="${user.role == 1}"><span class="status text-muted">&bull;</span> User</td>
 							<td>
 								<a href="#" class="settings" title="Settings" data-toggle="tooltip"><i class="material-icons">&#xE8B8;</i></a>
-								<a href="#" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
+								<a th:href="'users/' + ${user.id} + '/delete'" class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE5C9;</i></a>
 							</td>
 	                    </tr>
 	                   </th:block>

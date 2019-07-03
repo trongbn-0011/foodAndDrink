@@ -33,8 +33,12 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 
 	@Override
 	public boolean delete(User entity) {
-		// TODO Auto-generated method stub
-		return false;
+		try {
+			getUserDAO().delete(entity);
+			return true;
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	@Override
@@ -87,7 +91,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 			return getUserDAO().userCount(userName);
 		} catch (Exception e) {
 			LOGGER.error(e);
-			throw e;
+			return 0;
 		}
 	}
 
@@ -99,6 +103,17 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		} catch (Exception e) {
 			LOGGER.error(e);
 			return null;
+		}
+	}
+
+	@Override
+	public boolean deleteUser(Integer id) {
+		try {
+			User user = getUserDAO().findById(id);
+			return delete(user);
+		} catch (Exception e) {
+			LOGGER.error(e);
+			throw e;
 		}
 	}
 

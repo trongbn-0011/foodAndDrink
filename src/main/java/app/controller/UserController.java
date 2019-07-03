@@ -23,8 +23,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import app.bean.UserInfo;
 import app.model.User;
@@ -44,8 +46,16 @@ public class UserController {
 	private String msg_logout;
 	@Value("${messages.nouserfound}")
 	private String msg_nouserfound;
+	@Value("${messages.deleted}")
+	private String msg_deleted;
+	@Value("${messages.deletefail}")
+	private String msg_deletefail;
 	@Value("${messages.danger}")
 	private String danger;
+	@Value("${messages.error}")
+	private String error;
+	@Value("${messages.success}")
+	private String success;
 	@Value("${defaultUserPage}")
 	private int defaultPage;
 	@Value("${defaultUserPageSize}")
@@ -82,7 +92,7 @@ public class UserController {
 		return "login";
 	}
 
-	@GetMapping(value = "users/{id}")
+	@GetMapping("users/{id}")
 	public String show(@PathVariable("id") int id, Model model) {
 		logger.info("detail student");
 		User user = userService.findById(id);
@@ -96,7 +106,7 @@ public class UserController {
 		return "error";
 	}
 
-	@PostMapping(value = "/registerProcess")
+	@PostMapping("/registerProcess")
 	public String register(@ModelAttribute("userInfo") UserInfo userInfo, BindingResult result, Model model) {
 		UserValidation validation = new UserValidation();
 		validation.validate(userInfo, result);
@@ -117,10 +127,9 @@ public class UserController {
 		modelMap.addAttribute("userInfo", new UserInfo());
 		return "register";
 	}
-
-	@GetMapping(value = "/users")
-	public String index(Model model, @RequestParam("search") Optional<String> search,
-			@RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
+	
+	@GetMapping("/users")
+	public String index(Model model, @RequestParam("search") Optional<String> search, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
 		int currentPage = page.orElse(defaultPage);
 		int pageSize = size.orElse(defaultPageSize);
 		String userName = search.orElse("");
@@ -138,5 +147,18 @@ public class UserController {
 		}
 		return "users/users";
 	}
-
+	
+	@GetMapping("users/{id}/delete")
+	public String deleteUser(@PathVariable("id") Integer id, final RedirectAttributes redirectAttributes) {
+		logger.info("delete user");
+		if (userService.deleteUser(id)) {
+			redirectAttributes.addFlashAttribute("css", success);
+			redirectAttributes.addFlashAttribute("msg", msg_deleted);
+		} else {
+			redirectAttributes.addFlashAttribute("css", error);
+			redirectAttributes.addFlashAttribute("msg", msg_deletefail);
+		}
+		return "redirect:/users";
+	}
+	
 }
