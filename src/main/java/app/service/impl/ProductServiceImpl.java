@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+
+import app.bean.ProductInfo;
 import app.model.Product;
 import app.service.ProductService;
 
@@ -57,5 +59,5 @@ public class ProductServiceImpl extends BaseServiceImpl implements ProductServic
 			return null;
 		}
 	}
-
+	
 }

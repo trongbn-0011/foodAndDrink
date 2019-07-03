@@ -2,6 +2,7 @@ package app.service;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+
 import app.model.Product;
 
 public interface ProductService extends BaseService<Integer, Product> {

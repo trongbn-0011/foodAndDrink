@@ -9,7 +9,7 @@ public class BaseServiceImpl {
 	protected ProductDAO productDAO;
 	protected UserDAO userDAO;
 	protected CategoryDAO categoryDAO;
-
+	
 	public ProductDAO getProductDAO() {
 		return productDAO;
 	}
