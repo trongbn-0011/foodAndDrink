@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import app.bean.UserInfo;
 import app.model.User;
 import app.service.UserService;
 import validate.UserValidation;
@@ -49,22 +50,28 @@ public class UserController {
 	private int defaultPage;
 	@Value("${defaultUserPageSize}")
 	private int defaultPageSize;
+	@Value("${Login_error}")
+	private String login_error;
+	@Value("${Email_already}")
+	private String email_already;
 
 	public UserService getUserService() {
 		return userService;
 	}
 
 	@PostMapping("/welcome")
-	public String welcome(@RequestParam("username") String username, @RequestParam("password") String password,
-			HttpServletRequest request) {
+	public String welcome(@RequestParam("email") String usermail, @RequestParam("password") String password,
+			HttpServletRequest request, Model model) {
 
-		User user = getUserService().findByUsenameAndPassword(username, password);
+		User user = getUserService().findByEmailAndPassword(usermail, password);
 		if (user != null) {
 			HttpSession session = request.getSession(true);
 			session.setAttribute("name", user.getName());
 			return "welcome";
+		} else {
+			model.addAttribute("error", login_error);
 		}
-		return "login";
+		return "redirect:login";
 	}
 
 	@GetMapping("/logout")
@@ -90,43 +97,46 @@ public class UserController {
 	}
 
 	@PostMapping(value = "/registerProcess")
-	public String register(@ModelAttribute("user") User user, BindingResult result) {
+	public String register(@ModelAttribute("userInfo") UserInfo userInfo, BindingResult result, Model model) {
 		UserValidation validation = new UserValidation();
-		validation.validate(user, result);
+		validation.validate(userInfo, result);
 		if (result.hasErrors()) {
 			return "register";
-		} else {
-			userService.createUser(user);
 		}
+		if (userService.isEmailExist(userInfo.getEmail())) {
+			model.addAttribute("errorMessage", email_already);
+			return "register";
+		}
+		userService.createUser(userInfo.convertToUser());
+
 		return "index";
 	}
 
 	@GetMapping("/register")
 	public String register(ModelMap modelMap) {
-		modelMap.addAttribute("user", new User());
+		modelMap.addAttribute("userInfo", new UserInfo());
 		return "register";
 	}
-	
+
 	@GetMapping(value = "/users")
-	public String index(Model model, @RequestParam("search") Optional<String> search, @RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
+	public String index(Model model, @RequestParam("search") Optional<String> search,
+			@RequestParam("page") Optional<Integer> page, @RequestParam("size") Optional<Integer> size) {
 		int currentPage = page.orElse(defaultPage);
-	    int pageSize = size.orElse(defaultPageSize);
-	    String userName = search.orElse("");
-	    
-	    Page<User> users = userService.loadUsers(userName, PageRequest.of(currentPage - 1, pageSize));
-	    
-	    model.addAttribute("search", userName);
-	    model.addAttribute("users", users);
-	    
-	    int totalPages = users.getTotalPages();
-        
-	    if (totalPages > 0) {
-            List<Integer> pages = IntStream.rangeClosed(1, totalPages)
-                .boxed()
-                .collect(Collectors.toList());
-            model.addAttribute("pages", pages);
-        }
-	    return "users/users";
+		int pageSize = size.orElse(defaultPageSize);
+		String userName = search.orElse("");
+
+		Page<User> users = userService.loadUsers(userName, PageRequest.of(currentPage - 1, pageSize));
+
+		model.addAttribute("search", userName);
+		model.addAttribute("users", users);
+
+		int totalPages = users.getTotalPages();
+
+		if (totalPages > 0) {
+			List<Integer> pages = IntStream.rangeClosed(1, totalPages).boxed().collect(Collectors.toList());
+			model.addAttribute("pages", pages);
+		}
+		return "users/users";
 	}
-	
+
 }
