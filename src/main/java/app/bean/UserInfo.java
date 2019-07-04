@@ -100,7 +100,7 @@ public class UserInfo {
 		user.setName(this.getName());
 		user.setEmail(this.getEmail());
 		user.setAddress(this.getAddress());
-		user.setPassword(this.getPassword());
+		user.setPassword(this.getPassword().trim());
 		return user;
 	}
 	

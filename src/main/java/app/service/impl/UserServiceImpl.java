@@ -4,16 +4,21 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import app.model.User;
 import app.service.UserService;
 
 public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	private static final Logger LOGGER = Logger.getLogger(UserServiceImpl.class);
+
+	@Autowired
+	private PasswordEncoder passwordEncoder;
 
 	@Override
 	public User findById(Serializable key) {
@@ -44,8 +49,10 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 	@Override
 	public User findByEmailAndPassword(String usermail, String password) {
 		try {
-			User user = userDAO.findByEmailAndPassword(usermail, password);
-			return user;
+			User user = userDAO.findUserByEmail(usermail);
+			if (passwordEncoder.matches(password, user.getPassword()))
+				return user;
+			return null;
 		} catch (Exception e) {
 			return null;
 		}
@@ -56,6 +63,7 @@ public class UserServiceImpl extends BaseServiceImpl implements UserService {
 		try {
 			user.setActived(0);
 			user.setRole(0);
+			user.setPassword(passwordEncoder.encode(user.getPassword()));
 			User userNew = getUserDAO().saveOrUpdate(user);
 			return userNew != null;
 		} catch (Exception e) {

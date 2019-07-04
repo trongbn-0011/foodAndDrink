@@ -10,7 +10,7 @@ public interface UserDAO extends BaseDAO<Integer, User> {
 	
 	int userCount(String userName);
 
-	User findByEmailAndPassword(String email, String password);
+	User findUserByEmail(String email);
 
 	boolean checkEmail(String email);
 	

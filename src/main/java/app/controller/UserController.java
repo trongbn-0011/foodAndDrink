@@ -73,7 +73,7 @@ public class UserController {
 	public String welcome(@RequestParam("email") String usermail, @RequestParam("password") String password,
 			HttpServletRequest request, Model model) {
 
-		User user = getUserService().findByEmailAndPassword(usermail, password);
+		User user = getUserService().findByEmailAndPassword(usermail, password.trim());
 		if (user != null) {
 			HttpSession session = request.getSession(true);
 			session.setAttribute("name", user.getName());
